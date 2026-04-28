@@ -1,108 +1,154 @@
-    // Theme Handling
+// ====================== GAME FLEX HUB - JavaScript ======================
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // Get all necessary elements
     const themeToggle = document.getElementById('theme-toggle');
     const settingsBtn = document.getElementById('settings-btn');
     const modal = document.getElementById('settings-modal');
     const closeModal = document.getElementById('close-modal');
+    
+    const loginBtn = document.getElementById('login-btn');
+    const signupBtn = document.getElementById('signup-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const accountStatus = document.getElementById('account-status');
 
+    let currentUser = null;   // null = guest
+
+    // ====================== THEME FUNCTIONS ======================
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
         
-        // Update icon
-        themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        // Update header toggle icon
+        if (themeToggle) {
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
     }
 
-    // Load saved theme or respect system preference
     function initTheme() {
         const savedTheme = localStorage.getItem('theme');
+        
         if (savedTheme) {
             setTheme(savedTheme);
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             setTheme('dark');
         } else {
             setTheme('light');
         }
     }
 
-    themeToggle.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('data-theme');
-        setTheme(current === 'dark' ? 'light' : 'dark');
-    });
+    // ====================== MODAL FUNCTIONS ======================
+    function openModal() {
+        if (modal) {
+            modal.style.display = 'flex';
+            updateAccountUI();
+        }
+    }
 
-    // Modal Controls
-    settingsBtn.addEventListener('click', () => {
-        modal.style.display = 'flex';
-        updateAccountUI();
-    });
+    function closeModalFunc() {
+        if (modal) modal.style.display = 'none';
+    }
 
-    closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    // Close modal when clicking outside
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) modal.style.display = 'none';
-    });
-
-    // Theme buttons inside modal
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const newTheme = btn.getAttribute('data-theme');
-            setTheme(newTheme);
-            
-            // Update active state
-            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        });
-    });
-
-    // Simple Account Simulation (for learning)
-    let currentUser = null;   // null = not logged in
-
+    // ====================== ACCOUNT FUNCTIONS ======================
     function updateAccountUI() {
-        const accountDiv = document.getElementById('account-status');
-        const loginBtn = document.getElementById('login-btn');
-        const signupBtn = document.getElementById('signup-btn');
-        const logoutBtn = document.getElementById('logout-btn');
+        if (!accountStatus) return;
 
         if (currentUser) {
-            accountDiv.innerHTML = `<p>Logged in as: <strong>${currentUser}</strong></p>`;
+            accountStatus.innerHTML = `<p>Logged in as: <strong>${currentUser}</strong></p>`;
             loginBtn.style.display = 'none';
             signupBtn.style.display = 'none';
             logoutBtn.style.display = 'block';
         } else {
-            accountDiv.innerHTML = `<p>You are not logged in</p>`;
+            accountStatus.innerHTML = `<p>You are not logged in</p>`;
             loginBtn.style.display = 'block';
             signupBtn.style.display = 'block';
             logoutBtn.style.display = 'none';
         }
     }
 
-    document.getElementById('logout-btn').addEventListener('click', () => {
-        if (confirm('Logout?')) {
-            currentUser = null;
-            updateAccountUI();
-        }
+    // ====================== EVENT LISTENERS ======================
+
+    // Theme Toggle (Header)
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+    }
+
+    // Open Settings Modal
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', openModal);
+    }
+
+    // Close Modal (X button)
+    if (closeModal) {
+        closeModal.addEventListener('click', closeModalFunc);
+    }
+
+    // Close modal when clicking outside
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModalFunc();
+            }
+        });
+    }
+
+    // Theme buttons inside the modal
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const newTheme = btn.getAttribute('data-theme');
+            setTheme(newTheme);
+
+            // Update active class
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
     });
 
-    // Fake Login / Signup (for demo)
-    document.getElementById('login-btn').addEventListener('click', () => {
-        const username = prompt("Enter username (demo):", "player123");
-        if (username) {
-            currentUser = username;
-            updateAccountUI();
-            alert(`Welcome back, ${username}!`);
-        }
-    });
+    // Login Button
+    if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            const username = prompt("Enter your username (demo):", "player123");
+            if (username && username.trim() !== "") {
+                currentUser = username.trim();
+                updateAccountUI();
+                alert(`Welcome back, ${currentUser}!`);
+                closeModalFunc();
+            }
+        });
+    }
 
-    document.getElementById('signup-btn').addEventListener('click', () => {
-        const username = prompt("Choose a username (demo):", "gamerX");
-        if (username) {
-            currentUser = username;
-            updateAccountUI();
-            alert(`Account created successfully! Welcome, ${username}`);
-        }
-    });
+    // Signup Button
+    if (signupBtn) {
+        signupBtn.addEventListener('click', () => {
+            const username = prompt("Choose a username for your new account:", "gamerX");
+            if (username && username.trim() !== "") {
+                currentUser = username.trim();
+                updateAccountUI();
+                alert(`Account created successfully!\nWelcome, ${currentUser}`);
+                closeModalFunc();
+            }
+        });
+    }
 
-    // Initialize everything
+    // Logout Button
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            if (confirm("Are you sure you want to logout?")) {
+                currentUser = null;
+                updateAccountUI();
+                alert("You have been logged out.");
+            }
+        });
+    }
+
+    // ====================== INITIALIZE ======================
     initTheme();
+    updateAccountUI();   // Initial account status
+
+    console.log("✅ Game Flex Hub JavaScript loaded successfully!");
+});
