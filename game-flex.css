@@ -1,3 +1,55 @@
+/* ==================== CSS VARIABLES ==================== */
+:root {
+    /* Light Theme */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #f1f5f9;
+    --bg-card: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --accent: #38bdf8;
+    --accent-gradient: linear-gradient(135deg, #38bdf8, #818cf8);
+    --border: rgba(148, 163, 184, 0.2);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+    /* Dark Theme */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e2937;
+    --bg-card: #1e2937;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent: #38bdf8;
+    --accent-gradient: linear-gradient(135deg, #38bdf8, #818cf8);
+    --border: rgba(255, 255, 255, 0.08);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Apply variables */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+header {
+    background: rgba(15, 23, 42, 0.95); /* Will be overridden by variables later */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+}
+
+section, .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+/* You can gradually replace more colors with variables as we go */
+
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 body {
@@ -156,4 +208,120 @@ footer {
     background: rgba(15, 23, 42, 0.9);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     color: #64748b;
+}
+.header-icons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.icon-btn {
+    background: rgba(255,255,255,0.08);
+    border: none;
+    color: #f8fafc;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(56, 189, 248, 0.2);
+    transform: scale(1.1);
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    display: none;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    width: 90%;
+    max-width: 420px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    padding: 1.5rem 1.8rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.modal-body {
+    padding: 1.8rem;
+}
+
+.setting-group {
+    margin-bottom: 2rem;
+}
+
+.setting-group h3 {
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.theme-options {
+    display: flex;
+    gap: 12px;
+}
+
+.theme-btn {
+    flex: 1;
+    padding: 14px;
+    border: 2px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-btn.active,
+.theme-btn:hover {
+    border-color: var(--accent);
+    background: var(--bg-card);
+}
+
+.modal-action-btn {
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.modal-action-btn.danger {
+    background: #ef4444;
+    color: white;
+}
+
+.modal-action-btn.secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
