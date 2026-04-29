@@ -13,6 +13,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
     const accountStatus = document.getElementById('account-status');
 
+    // ====================== GAME SLIDER ======================
+const sliderWrapper = document.getElementById('slider-wrapper');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+
+let currentIndex = 0;
+const cardWidth = 340; // card width + gap
+
+function slideTo(index) {
+    if (!sliderWrapper) return;
+    sliderWrapper.style.transform = `translateX(-${index * cardWidth}px)`;
+}
+
+if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+        const maxIndex = sliderWrapper.children.length - 3; // show 3 cards at a time roughly
+        currentIndex = Math.min(currentIndex + 1, maxIndex);
+        slideTo(currentIndex);
+    });
+}
+
+if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+        currentIndex = Math.max(currentIndex - 1, 0);
+        slideTo(currentIndex);
+    });
+}
+
+// Auto-slide every 5 seconds
+let autoSlide = setInterval(() => {
+    const maxIndex = sliderWrapper.children.length - 3;
+    currentIndex = (currentIndex + 1) > maxIndex ? 0 : currentIndex + 1;
+    slideTo(currentIndex);
+}, 5000);
+
+// Pause auto-slide when hovering over slider
+const sliderContainer = document.querySelector('.slider-container');
+if (sliderContainer) {
+    sliderContainer.addEventListener('mouseenter', () => clearInterval(autoSlide));
+    sliderContainer.addEventListener('mouseleave', () => {
+        autoSlide = setInterval(() => {
+            const maxIndex = sliderWrapper.children.length - 3;
+            currentIndex = (currentIndex + 1) > maxIndex ? 0 : currentIndex + 1;
+            slideTo(currentIndex);
+        }, 5000);
+    });
+}
+// Auto Scrolling Slider Control
+const sliderTrack = document.getElementById('slider-track');
+
+if (sliderTrack) {
+    // Pause when hovering
+    sliderTrack.addEventListener('mouseenter', () => {
+        sliderTrack.style.animationPlayState = 'paused';
+    });
+
+    sliderTrack.addEventListener('mouseleave', () => {
+        sliderTrack.style.animationPlayState = 'running';
+    });
+}
     let currentUser = null;   // null = guest
 
     // ====================== THEME FUNCTIONS ======================

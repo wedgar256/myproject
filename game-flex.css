@@ -127,7 +127,133 @@ header h1 {
     background: rgba(56, 189, 248, 0.25);
     transform: scale(1.1);
 }
+/* ==================== GAME SLIDER ==================== */
+.slider-section {
+    margin: 3rem 0;
+}
 
+.slider-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
+.slider-container {
+    position: relative;
+    padding: 10px 0;
+    overflow: hidden;
+}
+.slider-track {
+    display: flex;
+    gap: 24px;
+    animation: autoScroll 25s linear infinite;
+    width: max-content;
+}
+
+.slider-track:hover {
+    animation-play-state: paused;   /* Pause when user hovers */
+}
+.slider-wrapper {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.6s ease-in-out;
+    padding: 10px 0;
+}
+
+.game-card {
+    min-width: 320px;
+    background: var(--bg-card);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.4s ease;
+    border: 1px solid var(--border);
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.game-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}
+
+.game-info {
+    padding: 1.3rem;
+}
+
+.game-info h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.4rem;
+}
+
+.genre {
+    color: var(--accent);
+    font-size: 0.92rem;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.rating {
+    font-weight: 700;
+    color: #fbbf24;
+}
+
+/* Slider Buttons */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(15, 23, 42, 0.85);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.slider-btn:hover {
+    background: var(--accent);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn { left: -15px; }
+.next-btn { right: -15px; }
+
+/* Auto Scroll Animation */
+@keyframes autoScroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+/* Responsive */
+@media (max-width: 768px) {
+    .game-card {
+        min-width: 280px;
+    }
+    
+    .slider-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+}
 /* Navigation */
 nav {
     background: var(--bg-secondary);
